@@ -3,9 +3,6 @@ const s3 = new AWS.S3({
   accessKeyId: process.env.AWS_ACCESS_KEY,
   secretAccessKey: process.env.AWS_SECRET_KEY
 })
-const fs = require("fs");
-const util = require("util");
-const readFile = util.promisify(fs.readFile);
 const File = require('../models/file');
 const messageHandler= require('../helpers/constantType');
 const userId = {
@@ -13,11 +10,15 @@ const userId = {
   helga: 'helga123'
 }
 const fileUtil = require('../utils/aws-sdk')
+
 class ImageController {
   static async createImage(req, res, next) {
+    console.log('masuuk controller')
     try {
+      // req.file
       // let dataImage = await readFile(req.file.path)
       let dataImage = await fileUtil.readFileUtil(req.file.path)
+      console.log(dataImage)
       const param ={
         Bucket: process.env.BUCKET_NAME,
         Key: `${userId.kosasih}/${req.file.filename}`,
@@ -32,7 +33,7 @@ class ImageController {
       let savedData = await responImage.save()
       res.status(201).json(savedData)
     } catch (error) {
-      next({ status: 500, message: messageHandler.err500message});
+      next({ status: 500, message: error.message});
     }
    
   }

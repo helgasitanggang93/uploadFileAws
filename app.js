@@ -1,15 +1,11 @@
-if (process.env.NODE_ENV === "test" || process.env.NODE_ENV === "development") {
-  require("dotenv").config();
-}
+require("dotenv").config();
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const port = process.env.PORT_PRODUCTION || process.env.PORT_DEVELOPMENT;
+const port = 3000;
 const imageRoutes = require("./routes");
 const mongoose = require("mongoose");
-const uri =
-  process.env.MONGODB_URI_PRODUCTION ||
-  process.env.MONGODB_URI_DEVELOPMENT + process.env.NODE_ENV;
+const uri = 'mongodb://localhost:27017/aws-upload';
 const errHandler = require("./helpers/errHandler");
 mongoose.set("useNewUrlParser", true);
 mongoose.set("useUnifiedTopology", true);

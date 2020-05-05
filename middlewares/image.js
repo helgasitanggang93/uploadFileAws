@@ -4,9 +4,10 @@ const uuid = require("uuid/v1")
  * create temporary directory for file
  * rename the file with new Date()
  */
+//cb(null, `${uuid()}_${new Date().toISOString()}_${file.originalname}`);
 const fileStorage = multer.diskStorage({
   filename: (req, file, cb) => {
-    cb(null, `${uuid()}_${new Date().toISOString()}_${file.originalname}`);
+    cb(null, `${uuid()}_${new Date().toISOString().replace(/:/g, '-')}_${file.originalname}`);
   }
 });
 
@@ -17,10 +18,10 @@ const fileStorage = multer.diskStorage({
  * cb?: Function - callback provided by multer
  */
 const fileFilter = (req, file, cb) => {
-  console.log(file)
   if (
     file.mimetype === "image/jpeg" ||  file.mimetype === "application/pdf" ||  file.mimetype === "image/png" || file.mimetype === "video/mp4"
   ) {
+    console.log('masuuuk filter')
     cb(null, true);
   } else {
     cb(null, false);
